@@ -116,7 +116,6 @@ export async function placeOrder(
       side,
       action: "buy",
       count,
-      type: "limit",
       time_in_force: "good_till_canceled",
       ...(side === "yes" ? { yes_price: price } : { no_price: price }),
     });

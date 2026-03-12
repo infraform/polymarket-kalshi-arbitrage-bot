@@ -66,11 +66,12 @@ async function getMarketPrices(ticker: string): Promise<MarketPrices | null> {
     const res = await marketApi.getMarket(ticker);
     const m = res.data.market;
     if (!m) return null;
+    const raw = m as { yes_ask_dollars?: string; no_ask_dollars?: string; last_price_dollars?: string; ticker?: string };
     return {
-      ticker: m.ticker,
-      upAskCents: m.yes_ask ?? dollarsToCents(m.yes_ask_dollars),
-      downAskCents: m.no_ask ?? dollarsToCents(m.no_ask_dollars),
-      lastPriceCents: m.last_price ?? dollarsToCents(m.last_price_dollars),
+      ticker: raw.ticker ?? m.ticker,
+      upAskCents: dollarsToCents(raw.yes_ask_dollars),
+      downAskCents: dollarsToCents(raw.no_ask_dollars),
+      lastPriceCents: dollarsToCents(raw.last_price_dollars),
       fetchedAt: new Date(),
     };
   } catch {
