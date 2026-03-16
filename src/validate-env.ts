@@ -25,7 +25,7 @@ export function validateRequiredEnv(): void {
   const keyPath = getEnv("KALSHI_PRIVATE_KEY_PATH");
   const keyPem = getEnv("KALSHI_PRIVATE_KEY_PEM");
   if (!keyPath && !keyPem) {
-    missing.push("KALSHI_PRIVATE_KEY_PATH or KALSHI_PRIVATE_KEY_PEM");
+    missing.push("KALSHI_PRIVATE_KEY_PEM (recommended) or KALSHI_PRIVATE_KEY_PATH");
   }
 
   const polyKey = getEnv("POLYMARKET_PRIVATE_KEY");

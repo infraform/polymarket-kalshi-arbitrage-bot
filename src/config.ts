@@ -10,10 +10,14 @@ const PEM_FOOTER = "-----END RSA PRIVATE KEY-----";
 
 /**
  * Normalize private key so Node crypto accepts it.
+ * Handles PEM from .env: literal \n, real newlines, extra spaces.
  * Rebuilds PEM with strict 64-char base64 lines so Node/OpenSSL decoder accepts it.
  */
 function normalizePrivateKeyPem(value: string): string {
-  const trimmed = value.trim();
+  let trimmed = value.trim();
+  // Convert literal \n to real newlines (for PEM pasted in .env)
+  trimmed = trimmed.replace(/\\n/g, "\n");
+  trimmed = trimmed.trim();
   // Extract base64: remove header/footer and all whitespace
   let base64 = trimmed
     .replace(/-----BEGIN RSA PRIVATE KEY-----/g, "")
@@ -29,19 +33,19 @@ function normalizePrivateKeyPem(value: string): string {
 }
 
 function getPrivateKeyPem(): string {
-  const raw = process.env.KALSHI_PRIVATE_KEY_PEM ?? "";
+  const raw = (process.env.KALSHI_PRIVATE_KEY_PEM ?? "").trim();
   if (!raw) return "";
   return normalizePrivateKeyPem(raw);
 }
 
 export const config = {
   apiKey: process.env.KALSHI_API_KEY ?? "",
-  /** Path to RSA private key .pem file (optional if KALSHI_PRIVATE_KEY_PEM is set) */
-  privateKeyPath: process.env.KALSHI_PRIVATE_KEY_PATH ?? "",
-  /** PEM string for private key, normalized for SDK (optional if KALSHI_PRIVATE_KEY_PATH is set) */
+  /** PEM string for private key in .env (preferred; no path issues). Use KALSHI_PRIVATE_KEY_PEM. */
   get privateKeyPem(): string {
     return getPrivateKeyPem();
   },
+  /** Path to .pem file (fallback only when KALSHI_PRIVATE_KEY_PEM is not set) */
+  privateKeyPath: process.env.KALSHI_PRIVATE_KEY_PATH ?? "",
   /** Use demo environment when true */
   demo: process.env.KALSHI_DEMO === "true",
   basePath:

@@ -28,7 +28,7 @@ export function getFriendlyErrorMessage(err: unknown): string | null {
       "  • If using PKCS#8 ('-----BEGIN PRIVATE KEY-----'), convert it:\n" +
       "    openssl rsa -in key.pem -out rsa_key.pem\n" +
       "  • Ensure .env has no extra spaces or line breaks in the PEM\n" +
-      "  • Try KALSHI_PRIVATE_KEY_PATH pointing to a .pem file instead of PEM in env"
+      "  • Use KALSHI_PRIVATE_KEY_PEM with the full PEM string in .env (no file path)"
     );
   }
 

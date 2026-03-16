@@ -24,10 +24,10 @@ function buildConfiguration(): Configuration {
   return new Configuration({
     apiKey: config.apiKey,
     basePath: config.basePath,
-    ...(config.privateKeyPath
-      ? { privateKeyPath: config.privateKeyPath }
-      : config.privateKeyPem
-        ? { privateKeyPem: config.privateKeyPem }
+    ...(config.privateKeyPem
+      ? { privateKeyPem: config.privateKeyPem }
+      : config.privateKeyPath
+        ? { privateKeyPath: config.privateKeyPath }
         : {}),
   });
 }
