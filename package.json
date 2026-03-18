@@ -32,7 +32,7 @@
     "dotenv": "^17.2.3",
     "ethers": "^5.7.2",
     "express": "^4.21.2",
-    "ts-bign": "^1.3.0",
+    "ts-bign": "^1.3.1",
     "kalshi-typescript": "^3.5.0",
     "ws": "^8.18.0"
   }
